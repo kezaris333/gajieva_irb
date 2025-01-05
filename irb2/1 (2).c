@@ -26,7 +26,7 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 		if (balance < 10) 
 		{
 			result[index++] = ('0' | balance); //если остаток меньше 10, то это цифра
-			//попробовать поменять + на |
+			
 		}
 		else 
 		{
