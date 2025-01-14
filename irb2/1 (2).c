@@ -9,7 +9,7 @@
 void convert_to_r(int r, int num)  //например num =1900, r=5
 { //маска для полуечния остатка от деления на 2^r
 	unsigned int mask = ~(~0 << r); //получим маску 11111 илии 31
-	char result[64]; 
+	char result[64];
 	int index = 0;
 
 	//если число 0, обрабатываем отдельно
@@ -23,16 +23,17 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 	while (num > 0) {//получаем остаток при делении с помощью побитовой операции . деление на 2 = убрать последний бит, на 4 = последние два бита и тд
 		unsigned int balance = num & mask; //12345 & 31 = 13 (1101)
 
-		if (balance < 10) 
-		{
-			result[index++] = ('0' | balance); //если остаток меньше 10, то это цифра
-			
-		}
-		else 
-		{
-			result[index++] = ('A' | (balance ^ 10)); //если остаток больше 10, то это символ
-		}
+		if (balance < 10)
 
+		{
+			result[index] = ('0' | balance); //если остаток меньше 10, то это цифра
+			//попробовать поменять + на |
+		}
+		else
+		{
+			result[index] = ('A' | (balance ^ 10)); //если остаток больше 10, то это символ
+		}
+		index = (index | 1);
 		num = num >> r; //сдвиг для деления на 2^r/ после первого итерация num станет 385  12345>>5
 
 	}
@@ -45,8 +46,8 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 		char temp = result[start];
 		result[start] = result[end];
 		result[end] = temp;
-		start++;
-		end--;
+		start = (start | 1); //старт+1
+		end^1; //энд-11
 	}
 
 
@@ -65,7 +66,7 @@ int main() {
 	scanf_s("%d", &num);
 	printf("\nВведите степень числа r от 1 до 5 (2^r)\n");
 	scanf_s("%d", &r);
-	if (r < 1 || r > 5) 
+	if (r < 1 || r > 5)
 	{
 		printf("/n неправильная степень");
 		return -1;
@@ -76,5 +77,3 @@ int main() {
 	return 0;
 
 }
-
-
