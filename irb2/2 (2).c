@@ -209,10 +209,88 @@ char* randseed (int count, char **strings, int seed)
 
 int main(int argc, char* argv[]) 
 {
-	if (argc < 3) {
-		printf("недостаточное колчество аргументов");
-		return 1;
-	}
+		if (argc < 3) {
+			printf("недостаточно аргументов\n");
+			return 1;
+		}
 
+		char flag = argv[1][0]; // предполагаем что флаг передан первым символом
+		char* input_string = argv[2];
+		char* result = NULL;
+
+		switch (flag) {
+		case 'l': //длинка строки
+			printf("Длина строки: %d\n", calculate_lenght(input_string));
+			break;
+
+		case 'r': //реверс
+			result = reverse(input_string);
+			if (result != NULL) {
+				printf("перевёрнутая: %s\n", result);
+				free(result);
+			}
+			break;
+
+		case 'u': //верхний рег
+			result = top(input_string);
+			if (result != NULL) {
+				printf("Строка с нечётными буквами в верхнем регистре: %s\n", result);
+				free(result);
+			}
+			break;
+
+		case 'n': //сортировка
+			result = sortstr(input_string);
+			if (result != NULL) {
+				printf("Отсортированная строка: %s\n", result);
+				free(result);
+			}
+			break;
+
+		case 'c': //конкатенация строк в псевдослучайном порядке
+			if (argc < 4) {
+				printf("Недостаточное количество аргументов для флага -c\n");
+				return 1;
+			}
+			unsigned int seed = (unsigned int)atoi(argv[3]); // seed находится в argv[3], конвертируем из символа  в цифру
+
+			//определяем количество строк для обработки 2, 4, 5...
+			int count = 0;
+			for (int i = 0; i < argc; i++) { 
+				if ((i == 2 || (i >= 4 && i != NULL))) { //учитываем второй аргумент и дальше от 4
+					count++;
+				}
+			}
+
+			//создаем массив указателей на строки, которые нужно обработать
+			char** selected_strings = (char**)malloc(count * sizeof(char*));
+			if (selected_strings == NULL) {
+				printf("ошибка выделения памяти\n");
+				return 1;
+			}
+
+			int index = 0;
+			for (int i = 0; i < argc; i++) {
+				if (i == 2 || (i >=4 && i != NULL)) { // учитываем второй аргумент и дальше от 4
+					selected_strings[index++] = argv[i];
+				}
+			}
+
+			result = randseed(count, selected_strings, seed);
+			if (result != NULL) {
+				printf("конкатенированная строка: %s\n", result);
+				free(result);
+			}
+
+			free(selected_strings);
+			break;
+
+		default:
+			printf("неправильный флаг %c\n", flag);
+			return 1;
+		}
+
+		return 0;
+	
 
 }
