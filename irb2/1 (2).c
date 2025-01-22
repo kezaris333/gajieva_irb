@@ -20,6 +20,21 @@ void reverse_string(char* str, int length) {
 }
 
 
+int plus(int number, int carry) {
+	//int carry = 1; //унжно прибавить единицу
+	while (carry != 0) { //операция продолжается, пока есть перенос
+		int sum = number ^ carry;  //101^001 = 100 
+		carry = (number & carry) << 1; //считаем перенос 101 & 001 == 001 (умнож)  carry = 001
+		number = sum;  //число = 100
+	}
+	return number; 
+}
+
+int minus_one(int number) {
+	number = ~number;
+	return plus(number, 1); //+1
+}
+
 void convert_to_r(int r, int num)  //например num =1900, r=5
 { //маска для полуечния остатка от деления на 2^r
 		if (r < 1 || r > 5) {
@@ -27,7 +42,7 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 			return;
 		}
 
-	unsigned int mask = ~(~0 << r); //получим маску 11111 илии 31
+	unsigned int mask = minus_one((1 << r)); //получим маску 11111 илии 31
 	char result[64];
 	int index = 0;
 
@@ -52,7 +67,8 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 		{
 			result[index] = 'A' + (balance - 10); //если остаток больше 10, то это символ
 		}
-		index++;
+
+		plus (index, 1);
 		num = num >> r; //сдвиг для деления на 2^r/ после первого итерация num станет 385  12345>>5
 
 	}
