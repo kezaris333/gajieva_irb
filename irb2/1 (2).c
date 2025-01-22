@@ -3,11 +3,30 @@
 //операции и операции обращения к памяти, запрещается использовать стандартные
 //арифметические операции.Продемонстрируйте работу реализованной функции.
 
-
+#pragma warning(disable: 4996)
 #include <stdio.h>
+
+void reverse_string(char* str, int length) {
+	int start = 0;
+	int end = length- 1;
+
+	while (start < end) {
+		char temp = str[start];
+		str[start] = str[end];
+		str[end] = temp;
+		start++; 
+		end--; //-1
+	}
+}
+
 
 void convert_to_r(int r, int num)  //например num =1900, r=5
 { //маска для полуечния остатка от деления на 2^r
+		if (r < 1 || r > 5) {
+			printf("Неверное основание системы счисления! Должно быть от 2 до 32.\n");
+			return;
+		}
+
 	unsigned int mask = ~(~0 << r); //получим маску 11111 илии 31
 	char result[64];
 	int index = 0;
@@ -26,30 +45,21 @@ void convert_to_r(int r, int num)  //например num =1900, r=5
 		if (balance < 10)
 
 		{
-			result[index] = ('0' | balance); //если остаток меньше 10, то это цифра
+			result[index] = '0' + balance; //если остаток меньше 10, то это цифра
 			//попробовать поменять + на |
 		}
 		else
 		{
-			result[index] = ('A' | (balance ^ 10)); //если остаток больше 10, то это символ
+			result[index] = 'A' + (balance - 10); //если остаток больше 10, то это символ
 		}
-		index = (index | 1);
+		index++;
 		num = num >> r; //сдвиг для деления на 2^r/ после первого итерация num станет 385  12345>>5
 
 	}
 	result[index] = '\0';
 
 	//реверс строки
-	int start = 0;
-	int end = index ^ 1;  //index - 1
-	while (start < end) {
-		char temp = result[start];
-		result[start] = result[end];
-		result[end] = temp;
-		start = (start | 1); //старт+1
-		end^1; //энд-11
-	}
-
+	reverse_string(result, index);
 
 	printf("число в системе основания 2^%d  %s ", r, result);
 
