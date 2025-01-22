@@ -1,7 +1,17 @@
+//Реализовать функцию с переменным числом аргументов, находящую среди переданных
+//строковых представлений целых неотрицательных чисел, заданных в системе счисления с
+//основанием base, передаваемым как параметр функции, чисел, являющихся в системе счисления с
+//основанием base числами Капрекара.Продемонстрируйте работу функции.
+
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+////отбираем половинку и переводим ее в число 
+    //числа делаем в десятичную систему и прибавляем 
+    // потом смотрим на соответствие изначального числа и этого 
 
 unsigned int calculation_unsigned_pow(unsigned int base, unsigned int exponent) {
     unsigned int result = 1;
@@ -48,11 +58,6 @@ char* change_to_base_sys(int value, int base) {
     static char buffer[33]; //массив для хранения результата
     int index = 0;
 
-    //обрабатываем отрицательное число только для основания 10
-    if (value < 0 && base == 10) {
-        buffer[index++] = '-';
-        value = -value;
-    }
 
     do {
         buffer[index++] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"[value % base];
