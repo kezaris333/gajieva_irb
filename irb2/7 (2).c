@@ -37,10 +37,6 @@ int change_to_ten(const char* value, int sys) {
         else if (value[i] >= 'A' && value[i] <= 'Z') {
             value_in_ten += (value[i] - 'A' + 10) * power;
         }
-        else {
-            printf("Error value\n");
-            return -1;
-        }
         power *= sys;
     }
     return value_in_ten;
@@ -60,7 +56,7 @@ char* change_to_base_sys(int value, int base) {
 
 
     do {
-        buffer[index++] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"[value % base];
+        buffer[index++] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"[value % base]; // делим число на основание сс
         value /= base;
     } while (value > 0);
 
@@ -91,11 +87,11 @@ void isKramer(int count, unsigned int base, ...) {
             continue; //пропускаем некорректные числа
         }
 
-        int num_squared = calculation_unsigned_pow(num, 2);
-        char* num_squared_str = change_to_base_sys(num_squared, base);
+        int num_squared = calculation_unsigned_pow(num, 2);//сохраняем число в квадрате
+        char* num_squared_str = change_to_base_sys(num_squared, base); //сохр числоо в нужной сс
 
-        int len = strlen(num_squared_str);
-        int mid = len / 2;
+        int len = strlen(num_squared_str); //длина
+        int mid = len / 2; /
 
         //выделение памяти для левой и правой части
         char* left = malloc(mid + 1);
@@ -128,6 +124,6 @@ void isKramer(int count, unsigned int base, ...) {
 }
 
 int main() {
-    isKramer(3, 10, "35", "5", "45");
+    isKramer(2, 16, "1", "AB");
     return 0;
 }
